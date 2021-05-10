@@ -1,0 +1,115 @@
+CREATE TABLE customer(
+	customer_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(30),
+	last_name VARCHAR(50),
+	address VARCHAR(100),
+	email VARCHAR(50),
+	phone_number VARCHAR(15)
+); 
+
+SELECT * FROM customer
+--------------------------------------
+CREATE TABLE vendor(
+	vendor_id SERIAL PRIMARY KEY,
+	vendor_name VARCHAR(30),
+	phone_number VARCHAR(15),
+	address VARCHAR(100),
+);
+
+SELECT * FROM vendor
+--------------------------------------
+CREATE TABLE salesperson(
+	salesperson_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(30),
+	last_name VARCHAR(50)
+);
+
+SELECT * FROM salesperson
+--------------------------------------
+CREATE TABLE mechanic(
+	mechanic_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(30),
+	last_name VARCHAR(40)
+
+);
+
+SELECT * FROM mechanic
+--------------------------------------
+CREATE TABLE service(
+	service_id SERIAL PRIMARY KEY,
+	date TIMESTAMP,
+	description VARCHAR(255),
+	amount NUMERIC(7,2),
+	mechanic_id INTEGER,
+		FOREIGN KEY(mechanic_id)
+			REFERENCES mechanic(mechanic_id)
+);
+
+SELECT * FROM service
+--------------------------------------
+CREATE TABLE car(
+	VIN VARCHAR(20) NOT NULL PRIMARY KEY,
+	vendor_id INTEGER,
+		FOREIGN KEY(vendor_id)
+			REFERENCES vendor(vendor_id),
+	model VARCHAR(50),
+	year_ VARCHAR(4),
+	color VARCHAR(15),
+	amount NUMERIC(8,2)
+);
+
+SELECT * FROM car
+--------------------------------------
+CREATE TABLE part(
+	part_id SERIAL PRIMARY KEY,
+	name_ VARCHAR(50),
+	description VARCHAR(255),
+	amount NUMERIC(7,2),
+	SKU VARCHAR(20),
+	vendor_id INTEGER,
+		FOREIGN KEY(vendor_id)
+			REFERENCES vendor(vendor_id)
+);
+
+SELECT * FROM part
+--------------------------------------
+CREATE TABLE invoice(
+	invoice_id SERIAL PRIMARY KEY,
+	date TIMESTAMP,
+	car VARCHAR(20) NOT NULL,
+		FOREIGN KEY(car)
+			REFERENCES car(vin),
+	service INTEGER,
+		FOREIGN KEY(service)
+			REFERENCES service(service_id),
+	salesperson INTEGER,
+		FOREIGN KEY(salesperson)
+			REFERENCES salesperson(salesperson_id),
+	mechanic INTEGER,
+		FOREIGN KEY(mechanic)
+			REFERENCES mechanic(mechanic_id),
+	customer INTEGER,
+		FOREIGN KEY(customer)
+			REFERENCES customer(customer_id)
+	
+);
+
+SELECT * FROM invoice
+--------------------------------------
+INSERT INTO customer(
+first_name, last_name, address, email, phone_number) VALUES('Mason', 'Cucumber', '11208 King Robert Drive','Mason@Cucumber.gov','713-823-9283'),
+('Connor', 'Fidelstein', '32102 Queen Cersei Avenue','Connor@Fidel.gov','281-283-1731'),
+('Broomhilda','Mikaelson','99273 Snow Boulevard','Broom@son.gov','321-425-9871')
+--------------------------------------
+INSERT INTO vendor(
+vendor_name, phone_number, address) VALUES('Autonation','312-232-4235','32145 Grandsbury Road'),('Wheel to go','234-212-2351','82341 Jefferson Avenue'),('Motor Freeze','237-124-6356','29348 Starbridge lane')
+
+--------------------------------------
+INSERT INTO salesperson(
+first_name, last_name) VALUES('John','Rodriguez'),('Macy','Rivers'),('Jesee','Bowling')
+--------------------------------------
+INSERT INTO mechanic(
+first_name, last_name) VALUES('Billy','Jones'), ('Bob','Miller'),('Jorge','Leon')
+--------------------------------------
+INSERT INTO service(
+description, amount, mechanic_id) VALUES('Oil change','15','1'),('Filter change','25','2'),('Tire change','45','3')
